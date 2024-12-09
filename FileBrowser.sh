@@ -1,5 +1,4 @@
 #!/bin/bash
-
 selected=()
 show_hidden=0
 init()
@@ -16,9 +15,9 @@ fi
 all_content=${#content[@]} #represents the number of elements in the array
 for i in "${!content[@]}"; do
 if [[ $i -eq $cursor ]]; then
-echo " > ${content[$i]}"
+    echo " > $((i+1)) ${content[$i]}"
 else
-echo "   ${content[$i]}"
+    echo "  $((i+1)) $count ${content[$i]}"
 fi
 done
 echo "-------------------------------"
@@ -43,7 +42,15 @@ navigate()
                          cursor=0
                      fi
                      ;;
-             esac      
+                '[D')
+                    cd ..
+                    cursor=0
+                    ;; 
+             esac
+            ;;
+        'Q' |'q' )
+        exit 0
+        ;;
     esac
 
 }
