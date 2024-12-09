@@ -51,6 +51,9 @@ navigate()
         'Q' |'q' )
         exit 0
         ;;
+    'C'|'c')
+        cp "$PWD/${content[$cursor]}"
+        ;;
     esac
 
 }
