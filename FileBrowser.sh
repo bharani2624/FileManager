@@ -7,6 +7,7 @@ cursor=0
 prev=()
 prevcount=0
 currcount=0
+cp=""
 original_color=$(tput sgr0)
 init()
 {
@@ -37,6 +38,7 @@ if [[ ${#selected[@]} -ge 1 ]]; then
 else
     echo " "
 fi
+echo $cp
 }
 navigate()
 {
@@ -89,7 +91,21 @@ navigate()
          mv "${content[$cursor]}" "$new_name" || echo "Rename was not successful"
          ;;
          'c'|'C')
-         if[ -e ]
+         cp="$PWD/${content[$cursor]}"
+         ;;
+         'p'|'P')
+         if [ -e $cp ]; then
+         cp -r $cp .
+         else
+         cp $cp .
+         fi
+         ;;
+         'd'|'D')
+         if [ -e ${content[$cursor]} ]; then
+         rm -r "$PWD/${content[$cursor]}"
+         else
+         rm -r "$PWD/${content[$cursor]}"
+         fi
          ;;
     esac
 
