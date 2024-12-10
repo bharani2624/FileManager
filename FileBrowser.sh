@@ -1,6 +1,7 @@
 #!/bin/bash
 selected=()
 show_hidden=0
+select=0
 init()
 {
 clear
@@ -21,7 +22,12 @@ else
 fi
 done
 echo "-------------------------------"
-echo "Selected Files: ${selection[*]}"
+if [[ $select -eq 1 ]]; then
+echo "Selected Files:{$selected[*]}"
+else
+    echo " "
+fi
+#echo "Selected Files: ${selected[*]}"
 }
 navigate()
 {
@@ -51,13 +57,19 @@ navigate()
         'Q' |'q' )
         exit 0
         ;;
-    'C'|'c')
-        cp "$PWD/${content[$cursor]}"
+    '')
+        selected+=({"${content[$cursor]}"})
+        #echo "Selected Files:[${selected[*]}]"
         ;;
+     'A'|'a')
+         show_hidden=$((!show_hidden))
+         cursor=0
+         init
+         ;;
     esac
 
 }
-cursor=-1
+cursor=0
 while true; do
 init
 navigate
