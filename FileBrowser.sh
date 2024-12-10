@@ -9,6 +9,21 @@ prevcount=0
 currcount=0
 cp=""
 original_color=$(tput sgr0)
+search_mode=0 # Flag to track if in search mode
+search_results=() # Array to store search result
+search_files() {
+    read -p "Search for: " search_term
+    search_results=($(find . -name "*$search_term*" 2>/dev/null))
+    
+    if [[ ${#search_results[@]} -eq 0 ]]; then
+        echo "No results found for '$search_term'. Press Enter to return."
+        read
+    else
+        search_mode=1 # Enable search mode
+        cursor=0 # Reset cursor for navigation
+    fi
+}
+
 init()
 {
 clear
@@ -38,7 +53,7 @@ if [[ ${#selected[@]} -ge 1 ]]; then
 else
     echo " "
 fi
-echo $cp
+echo ${prev[@]}
 }
 navigate()
 {
@@ -78,13 +93,13 @@ navigate()
         clear
         exit 0
         ;;
-        'M' | 'm')
+        'S' | 's')
             selected+=({"${content[$cursor]}"})
         ;;
-          'A'|'a')
-            show_hidden=$((!show_hidden))
-            cursor=0
-            init
+        'A'|'a')
+         show_hidden=$((!show_hidden))
+         cursor=0
+         init
             ;;
          'r'|'R')
          read -p "Enter the new name: " new_name
@@ -94,18 +109,32 @@ navigate()
          cp="$PWD/${content[$cursor]}"
          ;;
          'p'|'P')
-         if [ -e $cp ]; then
+         if [ -d $cp ]; then
          cp -r $cp .
          else
          cp $cp .
          fi
          ;;
          'd'|'D')
-         if [ -e ${content[$cursor]} ]; then
+         if [ -d ${content[$cursor]} ]; then
          rm -r "$PWD/${content[$cursor]}"
          else
-         rm -r "$PWD/${content[$cursor]}"
+         rm "$PWD/${content[$cursor]}"
          fi
+         ;;
+         '')
+         if [ -d  ${content[$cursor]} ]; then
+         cd ${content[$cursor]} 
+         unset prev[@]
+         else
+         xdg-open "${content[$cursor]}"
+         fi
+         ;;
+         ?)
+        #  read -p "Search For: " search_term
+        #  find . -name "*$search_term*" 2>/dev/null
+        #  read -p "Press any key to continue"
+        search_files
          ;;
     esac
 
