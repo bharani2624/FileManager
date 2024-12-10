@@ -3,6 +3,9 @@ selected=()
 show_hidden=0
 select=0
 cursor=0
+prev=()
+prevcount=0
+currcount=0
 init()
 {
 clear
@@ -31,7 +34,6 @@ echo "Selected Files:{$selected[*]}"
 else
     echo " "
 fi
-#echo "Selected Files: ${selected[*]}"
 }
 navigate()
 {
@@ -42,24 +44,26 @@ navigate()
             case $input in
                 '[A')
                     ((cursor--))
-                    if [[ $cursor -lt 0 ]]; then
+                    if [[ $cursor -lt 0 ]]; then #-lt denotes lesser than
                         cursor=$((all_content))
                     fi
                     ;;
                  '[B')
                      ((cursor++))
-                     if [[ $cursor -ge $all_content ]]; then
+                     if [[ $cursor -ge $all_content ]]; then #-ge refers to greater or equal to
                          cursor=0
                      fi
                      ;;
                 '[D')
                     
-                    temp=$(PWD)
+                    prev[prevcount]=$PWD
+                    ((prevcount++))
                     cd ..
                     cursor=0
                     ;;
                 '[C')
-                    cd temp
+                    currcount=$((prevcount-1))
+                    cd ${prev[$currcount]}
                     ;;     
              esac
             ;;
@@ -69,7 +73,6 @@ navigate()
         ;;
     '')
         selected+=({"${content[$cursor]}"})
-        #echo "Selected Files:[${selected[*]}]"
         ;;
      'A'|'a')
          show_hidden=$((!show_hidden))
