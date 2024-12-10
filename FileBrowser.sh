@@ -2,10 +2,11 @@
 selected=()
 show_hidden=0
 select=0
+cursor=0
 init()
 {
 clear
-echo "Welcome To ABD File Browser"
+echo -e "\e[1;30m Welcome To ABD File Browser"
 echo "$PWD"
 echo "-------------------------------"
 if [[ $show_hidden -eq 1 ]]; then
@@ -15,10 +16,13 @@ content=($(ls -1 --group-directories-first))
 fi
 all_content=${#content[@]} #represents the number of elements in the array
 for i in "${!content[@]}"; do
-if [[ $i -eq $cursor ]]; then
-    echo " > $((i+1)) ${content[$i]}"
-else
-    echo "  $((i+1)) $count ${content[$i]}"
+if [[ -d "${content[$i]}" ]]; then
+    echo -e "\e[1;32m $((i+1)) ${content[$i]}"
+elif [[ $i -ne $cursor ]]; then
+    echo -e "\e[1;31m $((i+1)) ${content[$i]}"
+elif [[ $i -eq $cursor ]]; then
+    echo -e "\e[1;33m > $((i+1)) ${content[$i]}"
+
 fi
 done
 echo "-------------------------------"
@@ -49,12 +53,18 @@ navigate()
                      fi
                      ;;
                 '[D')
+                    
+                    temp=$(PWD)
                     cd ..
                     cursor=0
-                    ;; 
+                    ;;
+                '[C')
+                    cd temp
+                    ;;     
              esac
             ;;
         'Q' |'q' )
+        clear
         exit 0
         ;;
     '')
@@ -69,7 +79,6 @@ navigate()
     esac
 
 }
-cursor=0
 while true; do
 init
 navigate
