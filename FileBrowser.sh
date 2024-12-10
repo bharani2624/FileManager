@@ -21,12 +21,14 @@ content=($(ls -1 --group-directories-first))
 fi
 all_content=${#content[@]} #represents the number of elements in the array
 for i in "${!content[@]}"; do
-if [[ -d "${content[$i]}" ]]; then
-    echo -e "\e[1;32m $((i+1)) ${content[$i]}"
-elif [[ $i -ne $cursor ]]; then
-    echo -e "\e[1;31m $((i+1)) ${content[$i]}"
-elif [[ $i -eq $cursor ]]; then
+if [[ -d "${content[$i]}" && $i -eq $cursor ]]; then
     echo -e "\e[1;33m > $((i+1)) ${content[$i]}"
+elif [[ -d "${content[$i]}" ]]; then
+    echo -e "\e[1;33m $((i+1)) ${content[$i]}"
+elif [[ $i -ne $cursor ]]; then
+    echo -e "\e[1;30m $((i+1)) ${content[$i]}"
+elif [[ $i -eq $cursor ]]; then
+    echo -e "\e[1;32m > $((i+1)) ${content[$i]}"
 
 fi
 done
