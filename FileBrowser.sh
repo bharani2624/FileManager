@@ -84,6 +84,13 @@ navigate()
             cursor=0
             init
             ;;
+         'r'|'R')
+         read -p "Enter the new name: " new_name
+         mv "${content[$cursor]}" "$new_name" || echo "Rename was not successful"
+         ;;
+         'c'|'C')
+         if[ -e ]
+         ;;
     esac
 
 }
@@ -91,5 +98,3 @@ while true; do
 init
 navigate
 done
-
-
