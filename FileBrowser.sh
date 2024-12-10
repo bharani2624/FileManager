@@ -32,8 +32,8 @@ elif [[ $i -eq $cursor ]]; then
 fi
 done
 echo "-------------------------------"
-if [[ $select -eq 1 ]]; then
-echo "Selected Files:${selected[*]}"
+if [[ ${#selected[@]} -ge 1 ]]; then
+    echo "Selected Files:${selected[*]}"
 else
     echo " "
 fi
