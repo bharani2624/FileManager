@@ -1,4 +1,5 @@
 #!/bin/bash
+echo -e "\e[47m"
 selected=()
 show_hidden=0
 select=0
@@ -6,6 +7,7 @@ cursor=0
 prev=()
 prevcount=0
 currcount=0
+original_color=$(tput sgr0)
 init()
 {
 clear
@@ -30,10 +32,11 @@ fi
 done
 echo "-------------------------------"
 if [[ $select -eq 1 ]]; then
-echo "Selected Files:{$selected[*]}"
+echo "Selected Files:${selected[*]}"
 else
     echo " "
 fi
+# echo "${prev[*]}"
 }
 navigate()
 {
@@ -58,27 +61,29 @@ navigate()
                     
                     prev[prevcount]=$PWD
                     ((prevcount++))
+                    currcount=$prevcount
                     cd ..
                     cursor=0
                     ;;
                 '[C')
-                    currcount=$((prevcount-1))
+                    $((currcount--))
                     cd ${prev[$currcount]}
                     ;;     
              esac
             ;;
         'Q' |'q' )
+        echo -e "$(tput sgr0)"
         clear
         exit 0
         ;;
-    '')
-        selected+=({"${content[$cursor]}"})
+        'M' | 'm')
+            selected+=({"${content[$cursor]}"})
         ;;
-     'A'|'a')
-         show_hidden=$((!show_hidden))
-         cursor=0
-         init
-         ;;
+          'A'|'a')
+            show_hidden=$((!show_hidden))
+            cursor=0
+            init
+            ;;
     esac
 
 }
@@ -86,4 +91,5 @@ while true; do
 init
 navigate
 done
+
 
