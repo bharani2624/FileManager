@@ -13,7 +13,7 @@ init()
 clear
 echo -e "\e[1;30m Welcome To ABD File Browser"
 echo "$PWD"
-echo "-------------------------------"
+echo -e "\e[1;30m -------------------------------"
 if [[ $show_hidden -eq 1 ]]; then
 content=($(ls -a1 --group-directories-first))
 else
@@ -29,7 +29,6 @@ elif [[ $i -ne $cursor ]]; then
     echo -e "\e[1;30m $((i+1)) ${content[$i]}"
 elif [[ $i -eq $cursor ]]; then
     echo -e "\e[1;32m > $((i+1)) ${content[$i]}"
-
 fi
 done
 echo "-------------------------------"
@@ -38,7 +37,6 @@ echo "Selected Files:${selected[*]}"
 else
     echo " "
 fi
-# echo "${prev[*]}"
 }
 navigate()
 {
