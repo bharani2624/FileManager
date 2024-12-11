@@ -17,15 +17,15 @@ init()
 {
 clear
 echo -e "\e[1;30m Welcome To ABD File Browser"
-echo "$PWD"
-echo -e "T-Toggle For Options"
+echo "  $PWD"
+echo -e "   T-Toggle For Options"
 if [[ $toggle -eq 1 ]]; then 
-echo -e "C:Copy"
-echo -e "P:Paste"
-echo -e "D:Delete"
-echo -e "R:Rename"
-echo -e "Q:Quit"
-echo -e "S-Select"
+echo -e "   C:Copy"
+echo -e "   P:Paste"
+echo -e "   D:Delete"
+echo -e "   R:Rename"
+echo -e "   Q:Quit"
+echo -e "   S-Select"
 fi
 echo -e "\e[1;30m -------------------------------"
 if [[ $search_mode -eq 1 ]]; then
@@ -58,10 +58,11 @@ fi
 done
 echo "-------------------------------"
 if [[ ${#selected[@]} -ge 1 ]]; then
-    echo "Selected Files:${selected[*]}"
+    echo "Selected Files:${selected[*]} "
 else
     echo " "
 fi
+echo "$select"
 }
 navigate()
 {
@@ -113,7 +114,8 @@ navigate()
         exit 0
         ;;
         'S' | 's')
-            selected+=({"${content[$cursor]}"})
+            selected+="${content[$cursor]}"
+            select=1
         ;;
         'A'|'a')
             show_hidden=$((!show_hidden))
@@ -139,10 +141,23 @@ navigate()
             cp="$PWD/${content[$cursor]}"
          ;;
          'p'|'P')
-         if [ -d $cp ]; then
+         if [[ $select -eq 1  ]]; then
+         for i in "${selected[@]}"; do
+            if [ -d $i ]; then
+                cp -r "$PWD/$i" .
+            else
+                cp "$PWD/$i" .
+            fi
+            echo "Copied to ClipBoard!"
+         done
+         unset selected[@]
+         select=0
+        else
+          if [ -d $cp ]; then
             cp -r $cp .
-         else
+        else
             cp $cp .
+         fi
          fi
          ;;
          'd'|'D')
