@@ -125,8 +125,15 @@ navigate()
             init
          ;;   
          'r'|'R')
+            read -p "Do you want to rename ${content[$cursor]}: " rename
+            if [[ $rename == "y" ]]; then
             read -p "Enter the new name: " new_name
             mv "${content[$cursor]}" "$new_name" || echo "Rename was not successful"
+            else
+            echo "Renaming cancelled "
+            fi
+            echo "Press Enter To Continue............ "
+            read 
          ;;
          'c'|'C')
             cp="$PWD/${content[$cursor]}"
@@ -191,7 +198,6 @@ navigate()
 
     ;;
     esac
-
 }
 while true; do
 init
