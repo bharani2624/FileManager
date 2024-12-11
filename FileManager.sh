@@ -10,7 +10,7 @@ currcount=0
 cp=""
 original_color=$(tput sgr0)
 search_content=()
-t_height=$(tput lines)
+t_height=$(tput lines) #terminal height
 t_width=$(tput cols)
 toggle=0
 init()
@@ -42,7 +42,7 @@ else
     all_content=${#content[@]} #represents the number of elements in the array
 fi
 
-files_per_page=$((t_height - 4))  # Subtract header and footer lines
+files_per_page=$((t_height - 10)) #terminal height - 10
 start_index=$((cursor - (cursor % files_per_page))) 
 
 for ((i=start_index; i<start_index + files_per_page && i<all_content; i++)); do
@@ -64,7 +64,6 @@ if [[ ${#selected[@]} -ge 1 ]]; then
 else
     echo " "
 fi
-echo "$select"
 }
 navigate()
 {
@@ -116,7 +115,7 @@ navigate()
         exit 0
         ;;
         'S' | 's')
-            selected+="${content[$cursor]}"
+            selected+=("$PWD/${content[$cursor]}") # paranthesis is used to seperate each selected file
             select=1
         ;;
         'A'|'a')
@@ -146,11 +145,12 @@ navigate()
          if [[ $select -eq 1  ]]; then
          for i in "${selected[@]}"; do
             if [ -d $i ]; then
-                cp -r "$PWD/$i" .
+                cp -r "$i" .
             else
-                cp "$PWD/$i" .
+                cp "$i" .
             fi
-            echo "Copied to ClipBoard!"
+            echo "Copied"
+            read 
          done
          unset selected[@]
          select=0
