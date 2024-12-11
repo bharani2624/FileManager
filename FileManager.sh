@@ -149,9 +149,9 @@ navigate()
             else
                 cp "$i" .
             fi
-            echo "Copied"
-            read 
          done
+        echo "Copied"
+        read 
          unset selected[@]
          select=0
         else
@@ -163,6 +163,20 @@ navigate()
          fi
          ;;
          'd'|'D')
+         if [ $select -eq 1 ]; then
+        read -p "Do You Want To Delete The Selected:(y/n) " delselected
+        if [ $delselected == "y" ]; then
+         for i in "${selected[@]}"; do
+         if [ -d $i ]; then
+         rm -r $i
+         else
+         rm $i
+         fi
+         done
+         else
+         unset selected[@]
+        fi
+         else
          if [ -d ${content[$cursor]} ]; then
             read -p "Do you want to delete 🗑 ${content[$cursor]}: " delete
             if [[ $delete == "y" ]]; then
@@ -184,6 +198,8 @@ navigate()
             echo "${content[$cursor]} Was Not Deleted"
             fi
          fi
+         fi
+         
          ;;
          '')
          if [ -d  ${content[$cursor]} ]; then
