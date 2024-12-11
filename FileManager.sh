@@ -33,9 +33,11 @@ if [[ $search_mode -eq 1 ]]; then
     content=("${search_content[@]}")
 else
     if [[ $show_hidden -eq 1 ]]; then
-    content=($(ls -a1 --group-directories-first))
+    # content=($(ls -a1 --group-directories-first))
+    mapfile -t content < <(ls -a1 --group-directories-first)
     else
-    content=($(ls -1 --group-directories-first))
+    # content=($(ls -1 --group-directories-first))
+    mapfile -t content < <(ls -1 --group-directories-first)
     fi
     all_content=${#content[@]} #represents the number of elements in the array
 fi
@@ -46,19 +48,19 @@ start_index=$((cursor - (cursor % files_per_page)))
 for ((i=start_index; i<start_index + files_per_page && i<all_content; i++)); do
             item=${content[$i]}
 if [[ -d "$item" && $i -eq $cursor ]]; then
-    echo -e "\e[1;33m ⭐ $((i+1)) ${item}"
+    echo -e "\e[1;33m ⭐ $((i+1)) ${item##*/}"
 elif [[ -d "$item" ]]; then
-    echo -e "\e[1;33m $((i+1)) ${item/}"
+    echo -e "\e[1;33m $((i+1)) ${item##*/}"
 elif [[ $i -ne $cursor ]]; then
-    echo -e "\e[1;30m $((i+1)) ${item/}"
+    echo -e "\e[1;30m $((i+1)) ${item##*/}"
 elif [[ $i -eq $cursor ]]; then
-    echo -e "\e[1;32m > $((i+1)) ${item}"
+    echo -e "\e[1;32m > $((i+1)) ${item##*/}"
 fi
 
 done
 echo "-------------------------------"
 if [[ ${#selected[@]} -ge 1 ]]; then
-    echo "Selected Files:${selected[*]} "
+    echo "Selected Files:${selected[*]}"
 else
     echo " "
 fi
@@ -187,6 +189,7 @@ navigate()
          if [ -d  ${content[$cursor]} ]; then
             cd ${content[$cursor]} 
             unset prev[@]
+            cursor=0
          else
             xdg-open "${content[$cursor]}"
          fi
