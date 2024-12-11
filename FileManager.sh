@@ -115,52 +115,52 @@ navigate()
             selected+=({"${content[$cursor]}"})
         ;;
         'A'|'a')
-         show_hidden=$((!show_hidden))
-         cursor=0
-         init
+            show_hidden=$((!show_hidden))
+            cursor=0
+            init
             ;;
          'T'|'t')
-         toggle=$((!toggle))
-         init
+            toggle=$((!toggle))
+            init
          ;;   
          'r'|'R')
-         read -p "Enter the new name: " new_name
-         mv "${content[$cursor]}" "$new_name" || echo "Rename was not successful"
+            read -p "Enter the new name: " new_name
+            mv "${content[$cursor]}" "$new_name" || echo "Rename was not successful"
          ;;
          'c'|'C')
-         cp="$PWD/${content[$cursor]}"
+            cp="$PWD/${content[$cursor]}"
          ;;
          'p'|'P')
          if [ -d $cp ]; then
-         cp -r $cp .
+            cp -r $cp .
          else
-         cp $cp .
+            cp $cp .
          fi
          ;;
          'd'|'D')
          if [ -d ${content[$cursor]} ]; then
-         rm -r "$PWD/${content[$cursor]}"
+            rm -r "$PWD/${content[$cursor]}"
          else
-         rm "$PWD/${content[$cursor]}"
+            rm "$PWD/${content[$cursor]}"
          fi
          ;;
          '')
          if [ -d  ${content[$cursor]} ]; then
-         cd ${content[$cursor]} 
-         unset prev[@]
+            cd ${content[$cursor]} 
+            unset prev[@]
          else
-         xdg-open "${content[$cursor]}"
+            xdg-open "${content[$cursor]}"
          fi
          ;;
-'?' )
-    read -p "Search For: " search_term
-    mapfile -t search_content < <(find . -name "*$search_term*" 2>/dev/null)
-    if [[ ${#search_content[@]} -eq 0 ]]; then
-          echo "No results found for '$search_term'. Press Enter to return."
-          read
-    else
-        search_mode=1
-        cursor=0
+        '?' )
+        read -p "Search For: " search_term
+        mapfile -t search_content < <(find . -name "*$search_term*" 2>/dev/null)
+        if [[ ${#search_content[@]} -eq 0 ]]; then
+            echo "No results found for '$search_term'. Press Enter to return."
+            read
+        else
+            search_mode=1
+            cursor=0
     fi
     ;;
     esac
