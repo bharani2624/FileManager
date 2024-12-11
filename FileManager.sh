@@ -128,7 +128,7 @@ navigate()
             init
          ;;   
          'r'|'R')
-            read -p "Do you want to rename ${content[$cursor]}: " rename
+            read -p "Do you want to rename 🖊 ${content[$cursor]}: " rename
             if [[ $rename == "y" ]]; then
             read -p "Enter the new name: " new_name
             mv "${content[$cursor]}" "$new_name" || echo "Rename was not successful"
@@ -142,28 +142,35 @@ navigate()
             cp="$PWD/${content[$cursor]}"
          ;;
          'p'|'P')
-         if [[ $select -eq 1  ]]; then
-         for i in "${selected[@]}"; do
+        if [[ $select -eq 1  ]]; then
+        read -p "Do You Want To Copy All The Selected Items (y/n): " copy
+        if [ $copy == "y" ]; then
+        for i in "${selected[@]}"; do
             if [ -d $i ]; then
                 cp -r "$i" .
             else
                 cp "$i" .
             fi
          done
+        unset selected[@]
+        select=0
         echo "Copied"
+        echo "Press Enter To Continue............"
         read 
-         unset selected[@]
-         select=0
+        else
+        unset selected[@]
+        select=0
+        fi
         else
           if [ -d $cp ]; then
             cp -r $cp .
         else
             cp $cp .
-         fi
-         fi
+          fi
+        fi
          ;;
          'd'|'D')
-         if [ $select -eq 1 ]; then
+        if [ $select -eq 1 ]; then
         read -p "Do You Want To Delete The Selected:(y/n) " delselected
         if [ $delselected == "y" ]; then
          for i in "${selected[@]}"; do
@@ -173,8 +180,14 @@ navigate()
          rm $i
          fi
          done
+         select=0
+         unset selected[@]
+         echo "Successfully Deleted!"
+         read
+         echo "Press Enter To Continue..........."
          else
          unset selected[@]
+         select=0
         fi
          else
          if [ -d ${content[$cursor]} ]; then
