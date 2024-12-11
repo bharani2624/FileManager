@@ -22,7 +22,8 @@ echo -e "T-Toggle For Options"
 if [[ $toggle -eq 1 ]]; then 
 echo -e "C:Copy"
 echo -e "P:Paste"
-echo -e "R:Delete"
+echo -e "D:Delete"
+echo -e "R:Rename"
 echo -e "Q:Quit"
 echo -e "S-Select"
 fi
@@ -139,9 +140,25 @@ navigate()
          ;;
          'd'|'D')
          if [ -d ${content[$cursor]} ]; then
+            read -p "Do you want to delete 🗑 ${content[$cursor]}: " delete
+            if [[ $delete == "y" ]]; then
+            echo "${content[$cursor]} Was Sucessfully Deleted(🗑)"
+            echo "Press Enter To Continue.........."
             rm -r "$PWD/${content[$cursor]}"
+            read
+            else
+            echo "${content[$cursor]} Was Not Deleted"
+            fi
          else
-            rm "$PWD/${content[$cursor]}"
+          read -p "Do you want to delete ${content[$cursor]}: " delete
+            if [[ $delete == "y" ]]; then
+            echo "Successfully Deleted( 🗑 ) ${content[$cursor]}"
+            rm -r "$PWD/${content[$cursor]}"
+            echo "Press Enter To Continue.........."
+            read
+            else
+            echo "${content[$cursor]} Was Not Deleted"
+            fi
          fi
          ;;
          '')
@@ -162,6 +179,16 @@ navigate()
             search_mode=1
             cursor=0
     fi
+    ;;
+    'N'|'n')
+    read -p "Do You Want To Create A Folder:(y/n): " c
+    if [[ $c == "y" ]]; then
+    read -p "Enter The Name Of The Folder: " f
+    mkdir $f
+    else
+    echo ""
+    fi 
+
     ;;
     esac
 
