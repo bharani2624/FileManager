@@ -244,6 +244,17 @@ navigate()
     fi 
 
     ;;
+    'G'|'g')
+    read -p "Do You Want To Push Your Contents Into GitHub(y/n): " git
+    read -p "Enter You Commit Content: " commit
+    if [[ $git == "y" ]] then
+    git add .
+    git commit -m "$commit"
+    git push
+    else
+    echo ""
+    fi
+    ;;
     esac
 }
 while true; do
