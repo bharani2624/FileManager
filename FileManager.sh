@@ -26,6 +26,7 @@ echo -e "   D:Delete"
 echo -e "   R:Rename"
 echo -e "   Q:Quit"
 echo -e "   S-Select"
+echo -e "   G-Git Push(If You Only Had An Repository In Git Hub)"
 fi
 echo -e "\e[1;30m -------------------------------"
 if [[ $search_mode -eq 1 ]]; then
