@@ -251,6 +251,7 @@ navigate()
     git add .
     git commit -m "$commit"
     git push
+    sleep 5
     else
     echo ""
     fi
