@@ -1,5 +1,5 @@
 #!/bin/bash
-echo -e "\e[1;40m"
+echo -e "\e[1;41m"
 selected=()
 show_hidden=0
 select=0
