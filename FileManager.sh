@@ -49,9 +49,9 @@ start_index=$((cursor - (cursor % files_per_page)))
 for ((i=start_index; i<start_index + files_per_page && i<all_content; i++)); do
             item=${content[$i]}
 if [[ -d "$item" && $i -eq $cursor ]]; then
-    echo -e "\e[1;32m ⭐ $((i+1)) ${item##*/}"
+    echo -e "\e[1;31m ⭐ $((i+1)) ${item##*/}"
 elif [[ -d "$item" ]]; then
-    echo -e "\e[1;32m $((i+1)) ${item##*/}"
+    echo -e "\e[1;31m $((i+1)) ${item##*/}"
 elif [[ $i -ne $cursor ]]; then
     echo -e "\e[1;37m $((i+1)) ${item##*/}"
 elif [[ $i -eq $cursor ]]; then
