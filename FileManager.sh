@@ -1,5 +1,5 @@
 #!/bin/bash
-echo -e "\e[47m"
+echo -e "\e[1;40m"
 selected=()
 show_hidden=0
 select=0
@@ -16,7 +16,7 @@ toggle=0
 init()
 {
 clear
-echo -e "\e[1;30m Welcome To ABD File Browser"
+echo -e "\e[1;37m Welcome To ABD File Browser"
 echo "  $PWD"
 echo -e "   T-Toggle For Options"
 if [[ $toggle -eq 1 ]]; then 
@@ -28,7 +28,7 @@ echo -e "   Q:Quit"
 echo -e "   S-Select"
 echo -e "   G-Git Push(If You Only Had An Repository In Git Hub)"
 fi
-echo -e "\e[1;30m -------------------------------"
+echo -e "\e[1;37m -------------------------------"
 if [[ $search_mode -eq 1 ]]; then
     all_content=${#search_content[@]}
     content=("${search_content[@]}")
@@ -49,13 +49,13 @@ start_index=$((cursor - (cursor % files_per_page)))
 for ((i=start_index; i<start_index + files_per_page && i<all_content; i++)); do
             item=${content[$i]}
 if [[ -d "$item" && $i -eq $cursor ]]; then
-    echo -e "\e[1;33m ⭐ $((i+1)) ${item##*/}"
+    echo -e "\e[1;32m ⭐ $((i+1)) ${item##*/}"
 elif [[ -d "$item" ]]; then
-    echo -e "\e[1;33m $((i+1)) ${item##*/}"
+    echo -e "\e[1;32m $((i+1)) ${item##*/}"
 elif [[ $i -ne $cursor ]]; then
-    echo -e "\e[1;30m $((i+1)) ${item##*/}"
+    echo -e "\e[1;37m $((i+1)) ${item##*/}"
 elif [[ $i -eq $cursor ]]; then
-    echo -e "\e[1;32m > $((i+1)) ${item##*/}"
+    echo -e "\e[1;33m > $((i+1)) ${item##*/}"
 fi
 
 done
