@@ -26,7 +26,7 @@ ABD File Browser is a simple and lightweight terminal-based file manager written
 
 1. Clone the repository:
    ```bash
-   git clone <https://github.com/bharani2624/FileManager>
+   git clone https://github.com/bharani2624/FileManager
    cd FileManager
    ```
 
